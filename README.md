@@ -19,6 +19,7 @@
 5. [PARTIE 3 : La Réconciliation (Correction & Synchronisation)](#partie-3--la-réconciliation-correction--synchronisation)
 6. [Les Trois Perspectives](#les-trois-perspectives)
 7. [Conclusion & Ressources](#conclusion--ressources)
+8. [Code et Implementation Unity NGO](#implementation-dans-unity)
 
 ---
 
@@ -628,5 +629,7 @@ Lorsque le client reçoit l'état autoritaire du serveur :
 [Fast-Paced Multiplayer (Part I): Client-Server Game Architecture (Gabriel Gambetta)](https://www.gabrielgambetta.com/client-server-game-architecture.html)
 [Server In-game Protocol Design and Optimization (Valve)](https://developer.valvesoftware.com/wiki/Latency_Compensating_Methods_in_Client/Server_In-game_Protocol_Design_and_Optimization)
 [Unity Netcode 100% Server Authoritative with Client Prediction and Reconciliation (git-amend)](https://youtu.be/-lGsuCEWkM0?si=jLWQwQjHxf2rzU9s)
+
+## Implementation dans Unity
 
 Bon courage dans votre implémentation !
