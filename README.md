@@ -33,8 +33,8 @@ Pour implémenter le mouvement dans un jeu multijoueur, il existe deux approches
 |--------|---------------------|----------------------|
 | **Qui contrôle** | Le joueur contrôle sa position | Le serveur contrôle la position des joueurs |
 | **Fonctionnement** | Le client calcule et envoie sa position. Le serveur et les autres joueurs l'acceptent comme vérité. | Les joueurs envoient leurs inputs. Le serveur calcule et renvoie la vraie position. |
-| **✅ Avantages** | Fluide (aucune latence perceptible pour le joueur), Simple à implémenter, Code exécuté localement | Sécurisé (empêche la triche), Centralisé (source de vérité unique), Serveur valide tous les mouvements |
-| **❌ Inconvénients** | Vulnérable à la triche (téléportation, speed hack), Décentralisé (pas de source de vérité), Conflits de position possibles | Latence visible sans optimisation, Complexe à implémenter, Nécessite prédiction + réconciliation |
+| **Avantages** | Fluide (aucune latence perceptible pour le joueur), Simple à implémenter, Code exécuté localement | Sécurisé (empêche la triche), Centralisé (source de vérité unique), Serveur valide tous les mouvements |
+| **Inconvénients** | Vulnérable à la triche (téléportation, speed hack), Décentralisé (pas de source de vérité), Conflits de position possibles | Latence visible sans optimisation, Complexe à implémenter, Nécessite prédiction + réconciliation |
 | **Usage typique** | Jeux coopératifs casual, single-player avec multijoueur secondaire | Jeux compétitifs (CS:GO, Valorant, Overwatch, Apex, Fortnite) |
 
 **Tous les jeux compétitifs modernes utilisent l'approche Server-Authoritative** pour deux raisons critiques :
@@ -62,7 +62,7 @@ Voici l'architecture complète combinant **Client-Side Prediction** et **Server 
 flowchart LR
     subgraph etape1[" "]
         direction TB
-        t1["<b>🎮 ÉTAPE 1 : Client</b>"]
+        t1["<b>ÉTAPE 1 : Client</b>"]
         c1["Calcul des inputs (déplacement, saut...) et stockage dans un buffer"]
         c2["Le joueur exécute le mouvement de son côté"]
         t1-->c1-->c2
@@ -70,7 +70,7 @@ flowchart LR
 
     subgraph etape2[" "]
         direction TB
-        t2["<b>🖥️ ÉTAPE 2 : Serveur</b>"]
+        t2["<b>ÉTAPE 2 : Serveur</b>"]
         s1["Récupération des inputs quelques ticks en retard avec une marge de sécurité"]
         s2["Calcul du déplacement en fonction de ces inputs"]
         t2-->s1-->s2
@@ -78,7 +78,7 @@ flowchart LR
 
     subgraph etape3[" "]
         direction TB
-        t3["<b>🔄 ÉTAPE 3 : Réconciliation Client</b>"]
+        t3["<b>ÉTAPE 3 : Réconciliation Client</b>"]
         r1["Récupération de l'état du serveur (vieux de quelques ticks)"]
         r2["Comparaison avec l'état client au même moment dans le passé"]
         r3["Replace le joueur au bon endroit dans le présent si nécessaire"]
@@ -114,8 +114,8 @@ Si on utilisait directement le temps réel au lieu des ticks, voici ce qui se pa
 
 ```mermaid
 sequenceDiagram
-    participant Client as 🎮 CLIENT
-    participant Serveur as 🖥️ SERVEUR
+    participant Client as CLIENT
+    participant Serveur as SERVEUR
     
     Note over Client,Serveur: Tick 100
     Note over Client: Input capturé
@@ -353,17 +353,17 @@ sequenceDiagram
     
     Note over Client,Server: Tick 100
     Client-xNetwork: Paquet A [100,99,98,97]
-    Note over Network: ❌ PERDU
+    Note over Network: PERDU
     
     Note over Client,Server: Tick 101
     Client-xNetwork: Paquet B [101,100,99,98]
-    Note over Network: ❌ PERDU
+    Note over Network: PERDU
     
     Note over Client,Server: Tick 102
     Client->>Network: Paquet C [102,101,100,99]
-    Network->>Server: ✅ REÇU
+    Network->>Server: REÇU
     
-    Note over Server: ✅ Input 100 et 101 récupérés !<br/>Input 100 utilisé avec 2 ticks de retard<br/>Input 101 utilisé avec 1 tick de retard
+    Note over Server: Input 100 et 101 récupérés !<br/>Input 100 utilisé avec 2 ticks de retard<br/>Input 101 utilisé avec 1 tick de retard
 ```
 
 ---
@@ -481,7 +481,7 @@ graph LR
     end
     
     subgraph Impact[" "]
-        Result["✅ Impact d'un input manquant:<br/>~0.55cm au lieu de 6.7cm"]
+        Result["Impact d'un input manquant:<br/>~0.55cm au lieu de 6.7cm"]
         style Result fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
     end
     
@@ -490,14 +490,14 @@ graph LR
 
 #### Recommandations de Design
 
-**✅ Bon pour la Réconciliation** :
+**Bon pour la Réconciliation** :
 
 1. **Accélération/Décélération progressive** : Évite les changements instantanés de vélocité
 2. **Contrôle aérien** : Permet des corrections en temps réel
 3. **Friction élevée** : Ralentit progressivement plutôt que d'arrêter net
 4. **Vitesse maximale limitée** : Réduit l'impact des erreurs de timing
 
-**❌ Mauvais pour la Réconciliation** :
+** Mauvais pour la Réconciliation** :
 
 1. **Vitesse instantanée** : 0 → max en un seul tick
 2. **Aucun contrôle aérien** : Amplifie les petites erreurs initiales
@@ -575,9 +575,9 @@ Exemple de la reconciliation d'un autre client dans mon jeu. La boule violette e
 
 ### Récapitulatif des 3 Parties
 
-1. **🎮 Les Inputs** : Système de Ticks, Input Accumulation (Sticky Inputs), Circular Buffer, Redondance UDP
-2. **⚙️ Le Calcul** : Déterminisme strict, Architecture modulaire (IPhysicsComponent), MovementPayload complet
-3. **🔄 La Réconciliation** : Détection d'erreurs, Replay system, Smooth correction avec Visual Offset
+1. **Les Inputs** : Système de Ticks, Input Accumulation (Sticky Inputs), Circular Buffer, Redondance UDP
+2. **Le Calcul** : Déterminisme strict, Architecture modulaire (IPhysicsComponent), MovementPayload complet
+3. **La Réconciliation** : Détection d'erreurs, Replay system, Smooth correction avec Visual Offset
 
 ### Vue d'Ensemble de l'Implémentation
 
@@ -627,9 +627,9 @@ Lorsque le client reçoit l'état autoritaire du serveur :
 ### Ressources Complémentaires
 
 [Fast-Paced Multiplayer (Part I): Client-Server Game Architecture (Gabriel Gambetta)](https://www.gabrielgambetta.com/client-server-game-architecture.html)
-[Server In-game Protocol Design and Optimization (Valve)](https://developer.valvesoftware.com/wiki/Latency_Compensating_Methods_in_Client/Server_In-game_Protocol_Design_and_Optimization)
-[Unity Netcode 100% Server Authoritative with Client Prediction and Reconciliation (git-amend)](https://youtu.be/-lGsuCEWkM0?si=jLWQwQjHxf2rzU9s)
 
-## Implementation dans Unity
+[Server In-game Protocol Design and Optimization (Valve)](https://developer.valvesoftware.com/wiki/Latency_Compensating_Methods_in_Client/Server_In-game_Protocol_Design_and_Optimization)
+
+[Unity Netcode 100% Server Authoritative with Client Prediction and Reconciliation (git-amend)](https://youtu.be/-lGsuCEWkM0?si=jLWQwQjHxf2rzU9s)
 
 Bon courage dans votre implémentation !
