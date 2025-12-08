@@ -6,7 +6,7 @@
 
 **Une base pour créer le mouvement server-authoritatif dans Unity est fournie dans le repository**
 
-![""](2.gif)
+![""](1.gif)
 
 ---
 
@@ -542,7 +542,7 @@ Quand le serveur envoie l'état de la position au Tick 100, et que la position c
 
 C'est l'astuce qui rend le jeu fluide malgré les corrections. On sépare la **logique** (les collisions, les détections) du **visuel** (le modèle 3D, les effets, la caméra). La logique est téléportée instantanément à la bonne position après la réconciliation, tandis que le visuel est décalé de l'inverse de la correction au moment de la téléportation, puis interpolé vers 0 sur plusieurs frames. Ce modèle permet de cacher la réconciliation tout en gardant la fonctionnalité logique.
 
-!["GIF de reconciliation"](1.gif)
+!["GIF de reconciliation"](2.gif)
 
 Exemple de la reconciliation d'un autre client dans mon jeu. La boule violette est le decalage visuel, et la boule rouge est la veritable position du joueur.
 
