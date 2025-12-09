@@ -135,7 +135,7 @@ sequenceDiagram
     Note over Client: On recoit l'etat du tick 100
     Note over Client: On applique le mouvement
     
-    Note over Client,Serveur: ⚠️ RÉSULTAT<br>Le Client est constamment en <br>avance de 2 ticks sur le serveur
+    Note over Client,Serveur: RÉSULTAT<br>Le Client est constamment en <br>avance de 2 ticks sur le serveur
 ```
 
 #### Qu'est-ce qu'un Tick ?
@@ -193,7 +193,7 @@ Le **jitter** (variation de latence) est l'ennemi du netcode :
 graph TD
     
     subgraph Jitter["Variation du ping"]
-        J1[50ms] --> J2[48ms] --> J3["65ms ⚠️ Pic!<br>L'input arrive quelques ticks en retard"] --> J4[52ms] --> J5["70ms ⚠️ Pic!<br>L'input arrive quelques ticks en retard"]
+        J1[50ms] --> J2[48ms] --> J3["65ms Pic!<br>L'input arrive quelques ticks en retard"] --> J4[52ms] --> J5["70ms Pic!<br>L'input arrive quelques ticks en retard"]
     end
     
     subgraph Consequence[" "]
@@ -295,10 +295,10 @@ Pour stocker les inputs et les états du joueur, la structure la plus adaptée e
 
 | Structure | Avantages | Inconvénients | Verdict |
 |-----------|-----------|---------------|----------|
-| **List&lt;InputPayload&gt;** | Facile à utiliser | Croissance dynamique → Allocations mémoire<br>Le GC provoque des freezes imprévisibles<br>Recherche par tick : O(n) linéaire<br>Suppression d'anciennes valeurs : O(n) | ❌ INACCEPTABLE pour temps-réel |
-| **Queue&lt;InputPayload&gt;** | FIFO simple | Impossible d'accéder au milieu<br>Recherche par tick : O(n)| ❌ Mauvais pour replay |
-| **Dictionary&lt;int, InputPayload&gt;** |Accès O(1) par tick| Allocations pour chaque entrée<br>GC problématique<br>Surcoût mémoire hash table | ⚠️ Acceptable mais pas optimal |
-| **Circular Buffer** | Taille fixe → ZÉRO allocation après init<br>Accès O(1)<br>Pas de GC<br>Cache-friendly mémoire contiguë | Aucun | ✅ OPTIMAL pour netcode |
+| **List&lt;InputPayload&gt;** | Facile à utiliser | Croissance dynamique → Allocations mémoire<br>Le GC provoque des freezes imprévisibles<br>Recherche par tick : O(n) linéaire<br>Suppression d'anciennes valeurs : O(n) | Innacceptable pour un jeu en temps-réel |
+| **Queue&lt;InputPayload&gt;** | FIFO simple | Impossible d'accéder au milieu<br>Recherche par tick : O(n)| Mauvais pour le replay |
+| **Dictionary&lt;int, InputPayload&gt;** |Accès O(1) par tick| Allocations pour chaque entrée<br>GC problématique<br>Surcoût mémoire hash table | Acceptable mais pas optimal |
+| **Circular Buffer** | Taille fixe → ZÉRO allocation après init<br>Accès O(1)<br>Pas de GC<br>Cache-friendly mémoire contiguë | Aucun | Optimal pour netcode |
 
 ### 1.3 Redondance d'Inputs (Perte de Paquets)
 
@@ -465,7 +465,7 @@ sequenceDiagram
     Note over Server: Tick 100: Aucun input → +0cm
     Note over Server: Tick 101: Input reçu → +6.7cm
     
-    Note over Client,Server: ⚠️ Résultat: 6.7cm d'erreur dès le premier tick!
+    Note over Client,Server: Résultat: 6.7cm d'erreur dès le premier tick!
 ```
 
 **Solution** : Accelerer progressivement le joueur, pour minimiser l'importance d'un tick.
